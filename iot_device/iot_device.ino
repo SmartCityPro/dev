@@ -24,7 +24,7 @@ const char* password = STAPSK;
 const uint8_t fingerprint[20] = {0x08, 0x3b, 0x71, 0x72, 0x02, 0x43, 0x6e, 0xca, 0xed, 0x42, 0x86, 0x93, 0xba, 0x7e, 0xdf, 0x81, 0xc4, 0xbc, 0x62, 0x30};
 
 ESP8266WiFiMulti WiFiMulti;
-SocketIoClient webSocket;
+//SocketIoClient webSocket;
 
 String getData();
 
@@ -56,15 +56,19 @@ void setup() {
 //*Connect To AP */
   WiFi.mode(WIFI_STA);
   WiFiMulti.addAP(ssid, password);
-  
-  while(WiFiMulti.run() != WL_CONNECTED) {
-        delay(100);
-  }
 
-    webSocket.on("event", event);
-    webSocket.begin("my.socket-io.server");
+
+//* this code for socket connection */
+  
+//  while(WiFiMulti.run() != WL_CONNECTED) {
+//        delay(100);
+//  }
+//
+//    webSocket.on("event", event);
+//    webSocket.begin("my.socket-io.server");
 //const char* json = "{\"_id\":\"5e4f0489f69d13271ccb0646\",\"owner_id\":\"5e4edc20656468067898ab8a\",\"name\":\"Anwar\",\"email\":\"mohamed@gmail.com\",\"version\":1,\"tag\":\"AC\",\"is_sensor\":true,\"is_rgp\":true,\"temp_sensor\":25,\"isActive\":true,\"rgp_value\":255255255,\"rgp_name\":\"\",\"rgp_intensity\":50,\"number_of_pins\":2,\"pins\":[{\"_id\":\"5e5adba4f7c3960004b6b648\",\"pin_id\":\"1\",\"tag\":\"AC\",\"value\":\"off\",\"name\":\"pin1\",\"is_pwm\":false,\"intensity\":50,\"picture\":null},{\"_id\":\"5e5adba4f7c3960004b6b647\",\"pin_id\":\"2\",\"tag\":\"AC\",\"value\":\"on\",\"name\":\"pin2\",\"is_pwm\":false,\"intensity\":50,\"picture\":null}],\"__v\":0,\"index\":null,\"latitude\":null,\"longitude\":null,\"picture\":\"https://drive.google.com/uc?id=1P4Yck9Jqrm5hc-jbQ9LRXrKIQjZyvC79\",\"registered\":null}";
 //
+
 //const char* _id = root["_id"]; // "5e4f0489f69d13271ccb0646"
 //const char* owner_id = root["owner_id"]; // "5e4edc20656468067898ab8a"
 //const char* name = root["name"]; // "Anwar"
@@ -108,53 +112,53 @@ void setup() {
 
 void loop() {
 
-//  
-//  // wait for WiFi connection
-//  if ((WiFiMulti.run() == WL_CONNECTED)) {
-//   String jsonData = getData();
-////   Serial.println(jsonData);
-//   JsonObject& root = jsonBuffer.parseObject(jsonData);
-//    const char* _id = root["_id"]; // "device _id"
-//    const char* owner_id = root["owner_id"]; // "owner_id"
-//    const char* name = root["name"]; // "Anwar"
-//    const char* email = root["email"]; // "mohamed@gmail.com"
-////    int version = root["version"]; // 1
-////    const char* tag = root["tag"]; // "AC"
-////    bool is_sensor = root["is_sensor"]; // true
-////    bool is_rgp = root["is_rgp"]; // true
-////    int temp_sensor = root["temp_sensor"]; // 25
-////    bool isActive = root["isActive"]; // true
-////    long rgp_value = root["rgp_value"]; // 255255255
-////    const char* rgp_name = root["rgp_name"]; // ""
-////    int rgp_intensity = root["rgp_intensity"]; // 50
-////    int number_of_pins = root["number_of_pins"]; // 2
+  
+  // wait for WiFi connection
+  if ((WiFiMulti.run() == WL_CONNECTED)) {
+   String jsonData = getData();
+//   Serial.println(jsonData);
+   JsonObject& root = jsonBuffer.parseObject(jsonData);
+    const char* _id = root["_id"]; // "device _id"
+    const char* owner_id = root["owner_id"]; // "owner_id"
+    const char* name = root["name"]; // "Anwar"
+    const char* email = root["email"]; // "mohamed@gmail.com"
+//    int version = root["version"]; // 1
+//    const char* tag = root["tag"]; // "AC"
+//    bool is_sensor = root["is_sensor"]; // true
+//    bool is_rgp = root["is_rgp"]; // true
+//    int temp_sensor = root["temp_sensor"]; // 25
+//    bool isActive = root["isActive"]; // true
+//    long rgp_value = root["rgp_value"]; // 255255255
+//    const char* rgp_name = root["rgp_name"]; // ""
+//    int rgp_intensity = root["rgp_intensity"]; // 50
+//    int number_of_pins = root["number_of_pins"]; // 2
 //
-//    JsonObject& pins_0 = root["pins"][0];
-//    JsonObject& pins_1 = root["pins"][1];
-//    String pins_0_value = pins_0["value"]; // "off"
-//    String pins_1_value = pins_1["value"]; // "on"
-//    Serial.print("pins_0_value : ");
-//    Serial.println(pins_0_value);
-//    Serial.print("pins_1_value : ");
-//    Serial.println(pins_1_value);
-//    if(pins_0_value == "on" ){
-//    digitalWrite(PIN0, HIGH);
-//    Serial.print("sssssssss0");
-//    }else{
-//      Serial.print("hhhhhhhhhhhh0");
-//      digitalWrite(PIN0, LOW);
-//    }
-//   if(pins_1_value=="on"){
-//    digitalWrite(PIN1, HIGH);
-//    Serial.print("sssssssss1");
-//    }else{
-//      Serial.print("hhhhhhhhhhhh1");
-//      digitalWrite(PIN1, LOW);
-//    }
-//  }
-//
-//  Serial.println("Wait 500ms before next round...");
-//  delay(500);
+    JsonObject& pins_0 = root["pins"][0];
+    JsonObject& pins_1 = root["pins"][1];
+    String pins_0_value = pins_0["value"]; // "off"
+    String pins_1_value = pins_1["value"]; // "on"
+    Serial.print("pins_0_value : ");
+    Serial.println(pins_0_value);
+    Serial.print("pins_1_value : ");
+    Serial.println(pins_1_value);
+    if(pins_0_value == "on" ){
+    digitalWrite(PIN0, HIGH);
+    Serial.print("sssssssss0");
+    }else{
+      Serial.print("hhhhhhhhhhhh0");
+      digitalWrite(PIN0, LOW);
+    }
+   if(pins_1_value=="on"){
+    digitalWrite(PIN1, HIGH);
+    Serial.print("sssssssss1");
+    }else{
+      Serial.print("hhhhhhhhhhhh1");
+      digitalWrite(PIN1, LOW);
+    }
+  }
+
+  Serial.println("Wait 500ms before next round...");
+  delay(500);
   
 }
 
